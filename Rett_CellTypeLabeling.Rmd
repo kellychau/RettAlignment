@@ -3,6 +3,10 @@ title: "scANVI"
 output: html_document
 ---
 
+
+https://docs.scvi-tools.org/en/stable/tutorials/notebooks/scvi_in_R.html
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -104,6 +108,7 @@ DimPlot(Rett, reduction = "umap", pt.size = 3)
 ```
 
 ```{r}
+#Error
 adata$obs$insert(adata$obs$shape[1], "seurat_clusters", Rett[["seurat_clusters"]][,1])
 adata$obs$insert(adata$obs$)
 ```
