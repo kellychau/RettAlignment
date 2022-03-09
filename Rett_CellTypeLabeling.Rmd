@@ -1,0 +1,150 @@
+---
+title: "scANVI"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("Seurat")
+install.packages("reticulate")
+install.packages("cowplot")
+install.packages("devtools")
+
+devtools::install_github("satijalab/seurat-data")
+SeuratData::InstallData("pbmc3k")
+install.packages("https://seurat.nygenome.org/src/contrib/ifnb.SeuratData_3.0.0.tar.gz", repos = NULL, type = "source")
+SeuratData::InstallData("ifnb")
+```
+
+```{r}
+library(Seurat)
+library(SeuratData)
+#devtools::install_github('satijalab/seurat-data')
+```
+
+```{r}
+install.packages("SeuratObject")
+```
+
+```{r}
+Rett <- load("/Users/kellychau/Desktop/05_Human_rett_corrected2.RData")
+Rett = experiment.aggregate
+reference <- load("/Users/kellychau/Desktop/human_Hodge_et_al.rda")
+reference = human
+```
+
+```{r}
+print(Rett)
+print(reference)
+```
+
+
+```{r}
+Rett <- FindVariableFeatures(Rett, selection.method = "vst", nfeatures = 2000)
+Retttop2000 <- head(VariableFeatures(Rett), 2000)
+Rett <- Rett[Retttop2000]
+print(Rett)
+```
+
+```{r}
+library(reticulate)
+#devtools::install_github("cellgeni/sceasy")
+library(sceasy)
+
+sc <- import("scanpy", convert = FALSE)
+scvi <- import("scvi", convert = FALSE)
+```
+
+
+```{r}
+adata <- convertFormat(Rett, from="seurat", to="anndata", main_layer="counts", drop_single_values=FALSE)
+print(adata)
+```
+
+```{r}
+# run setup_anndata
+scvi$model$SCVI$setup_anndata(adata)
+```
+
+```{r}
+# create the model
+model = scvi$model$SCVI(adata)
+```
+
+```{r}
+# train the model
+model$train(max_epochs = as.integer(3))
+
+# to specify the number of epochs when training:
+# model$train(max_epochs = as.integer(400))
+```
+
+```{r}
+# get the latent represenation
+latent = model$get_latent_representation()
+
+# put it back in our original Seurat object
+latent <- as.matrix(latent)
+rownames(latent) = colnames(Rett)
+Rett[["scvi"]] <- CreateDimReducObject(embeddings = latent, key = "scvi_", assay = DefaultAssay(Rett))
+```
+
+
+```{r}
+# Find clusters, then run UMAP, and visualize
+Rett <- FindNeighbors(Rett, dims = 1:10, reduction = "scvi")
+Rett <- FindClusters(Rett, resolution =1)
+
+Rett <- RunUMAP(Rett, dims = 1:10, reduction = "scvi", n.components = 2)
+
+DimPlot(Rett, reduction = "umap", pt.size = 3)
+```
+
+```{r}
+adata$obs$insert(adata$obs$shape[1], "seurat_clusters", Rett[["seurat_clusters"]][,1])
+adata$obs$insert(adata$obs$)
+```
+
+```{r}
+DE <- model$differential_expression(adata, groupby="seurat_clusters", group1 = "1", group2 = "2")
+```
+
+```{r}
+print(DE$head())
+```
+
+
+```{r}
+reference <- FindVariableFeatures(reference, selection.method = "vst", nfeatures = 2000)
+top2000_reference <- head(VariableFeatures(reference), 2000)
+reference <- reference[top2000_reference]
+```
+
+```{r}
+adata <- convertFormat(reference, from="seurat", to="anndata", main_layer="counts", drop_single_values=FALSE)
+print(adata)
+```
+
+```{r}
+adata
+```
+
+```{r}
+
+# run setup_anndata, use column stim for batch
+scvi$model$SCVI$setup_anndata(adata, batch_key = 'stim')
+
+# create the model
+model = scvi$model$SCVI(adata)
+
+# train the model
+model$train()
+
+# to specify the number of epochs when training:
+# model$train(max_epochs = as.integer(400))
+```
+
+
