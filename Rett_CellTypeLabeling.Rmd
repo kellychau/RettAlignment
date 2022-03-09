@@ -11,11 +11,11 @@ install.packages("Seurat")
 install.packages("reticulate")
 install.packages("cowplot")
 install.packages("devtools")
-
 devtools::install_github("satijalab/seurat-data")
 SeuratData::InstallData("pbmc3k")
 install.packages("https://seurat.nygenome.org/src/contrib/ifnb.SeuratData_3.0.0.tar.gz", repos = NULL, type = "source")
 SeuratData::InstallData("ifnb")
+install.packages("SeuratObject")
 ```
 
 ```{r}
@@ -25,7 +25,7 @@ library(SeuratData)
 ```
 
 ```{r}
-install.packages("SeuratObject")
+
 ```
 
 ```{r}
