@@ -110,6 +110,7 @@ adata$obs$insert(adata$obs$)
 
 ```{r}
 DE <- model$differential_expression(adata, groupby="seurat_clusters", group1 = "1", group2 = "2")
+#test
 ```
 
 ```{r}
