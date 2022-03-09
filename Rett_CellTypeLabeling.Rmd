@@ -22,16 +22,20 @@ install.packages("SeuratObject")
 library(Seurat)
 library(SeuratData)
 #devtools::install_github('satijalab/seurat-data')
-```
-
-```{r}
-
+library(reticulate)
+#devtools::install_github("cellgeni/sceasy")
+library(sceasy)
 ```
 
 ```{r}
 Rett <- load("/Users/kellychau/Desktop/05_Human_rett_corrected2.RData")
 Rett = experiment.aggregate
 reference <- load("/Users/kellychau/Desktop/human_Hodge_et_al.rda")
+reference = human
+
+Rett <- load("/Users/osman/Desktop/LaSalle_lab/Human_rett_data/NovaSeq_data/05_Human_rett_corrected2.RData")
+Rett = experiment.aggregate
+reference <- load("/Users/osman/Desktop/LaSalle_lab/Human_rett_data/NovaSeq_data/human_Hodge_et_al.rda")
 reference = human
 ```
 
@@ -49,10 +53,6 @@ print(Rett)
 ```
 
 ```{r}
-library(reticulate)
-#devtools::install_github("cellgeni/sceasy")
-library(sceasy)
-
 sc <- import("scanpy", convert = FALSE)
 scvi <- import("scvi", convert = FALSE)
 ```
