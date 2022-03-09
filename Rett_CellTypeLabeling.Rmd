@@ -6,6 +6,7 @@ output: html_document
 
 https://docs.scvi-tools.org/en/stable/tutorials/notebooks/scvi_in_R.html
 
+Sys.setenv(RETICULATE_PYTHON = "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3")
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
