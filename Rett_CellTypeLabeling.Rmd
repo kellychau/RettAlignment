@@ -6,38 +6,45 @@ output: html_document
 
 https://docs.scvi-tools.org/en/stable/tutorials/notebooks/scvi_in_R.html
 
+<<<<<<< HEAD
 Sys.setenv(RETICULATE_PYTHON = "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3")
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+=======
+>>>>>>> 310888181e79b48768c1c925763ee30d4a6c9d20
 ```{r}
 install.packages("Seurat")
 install.packages("reticulate")
 install.packages("cowplot")
 install.packages("devtools")
-
 devtools::install_github("satijalab/seurat-data")
 SeuratData::InstallData("pbmc3k")
 install.packages("https://seurat.nygenome.org/src/contrib/ifnb.SeuratData_3.0.0.tar.gz", repos = NULL, type = "source")
 SeuratData::InstallData("ifnb")
+install.packages("SeuratObject")
 ```
 
 ```{r}
 library(Seurat)
 library(SeuratData)
 #devtools::install_github('satijalab/seurat-data')
-```
-
-```{r}
-install.packages("SeuratObject")
+library(reticulate)
+#devtools::install_github("cellgeni/sceasy")
+library(sceasy)
 ```
 
 ```{r}
 Rett <- load("/Users/kellychau/Desktop/05_Human_rett_corrected2.RData")
 Rett = experiment.aggregate
 reference <- load("/Users/kellychau/Desktop/human_Hodge_et_al.rda")
+reference = human
+
+Rett <- load("/Users/osman/Desktop/LaSalle_lab/Human_rett_data/NovaSeq_data/05_Human_rett_corrected2.RData")
+Rett = experiment.aggregate
+reference <- load("/Users/osman/Desktop/LaSalle_lab/Human_rett_data/NovaSeq_data/human_Hodge_et_al.rda")
 reference = human
 ```
 
@@ -55,10 +62,6 @@ print(Rett)
 ```
 
 ```{r}
-library(reticulate)
-#devtools::install_github("cellgeni/sceasy")
-library(sceasy)
-
 sc <- import("scanpy", convert = FALSE)
 scvi <- import("scvi", convert = FALSE)
 ```
