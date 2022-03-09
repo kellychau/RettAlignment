@@ -9,12 +9,7 @@ https://docs.scvi-tools.org/en/stable/tutorials/notebooks/scvi_in_R.html
 <<<<<<< HEAD
 Sys.setenv(RETICULATE_PYTHON = "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3")
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-=======
->>>>>>> 310888181e79b48768c1c925763ee30d4a6c9d20
 ```{r}
 install.packages("Seurat")
 install.packages("reticulate")
@@ -62,6 +57,10 @@ print(Rett)
 ```
 
 ```{r}
+library(reticulate)
+reticulate::use_condaenv('r-reticulate')
+sc <- reticulate::import('scanpy')
+scvi <- reticulate::import('scvi')
 sc <- import("scanpy", convert = FALSE)
 scvi <- import("scvi", convert = FALSE)
 ```
