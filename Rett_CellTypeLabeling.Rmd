@@ -6,11 +6,6 @@ output: html_document
 
 https://docs.scvi-tools.org/en/stable/tutorials/notebooks/scvi_in_R.html
 
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r}
 install.packages("Seurat")
 install.packages("reticulate")
